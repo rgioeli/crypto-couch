@@ -31,7 +31,7 @@ export default function Room({ user, messages, symbol }) {
   }, [scriptLoaded]);
 
   const connectSocket = async () => {
-    await fetch("http://localhost:3000/api/socket");
+    await fetch(`${process.env.NEXTAUTH_URL}/api/socket`);
   };
 
   return (

@@ -46,9 +46,7 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account }) {
-      const client = await MongoClient.connect(
-        "mongodb+srv://rgioeli:Plokijuhygtfrdeswa0!@cluster0.wwyx4.mongodb.net/crypto-couch?retryWrites=true&w=majority"
-      );
+      const client = await MongoClient.connect(process.env.MONGO_SERVER);
       const db = client.db("crypto-couch");
       if (account.provider == "google") {
         db.collection("users").insertOne({
@@ -57,13 +55,6 @@ export default NextAuth({
       }
 
       return true;
-    },
-    async session({ session }) {
-      if (session) {
-        return session;
-      }
-
-      console.log("Okay????");
     },
   },
 });
