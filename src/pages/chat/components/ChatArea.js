@@ -2,37 +2,15 @@ import styled from "styled-components";
 import ChatBox from "./ChatBox";
 import { uppercase } from "../functions/uppercase";
 import { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
 
-const ChatArea = ({ symbol = "DOGEUSD", user }) => {
-  //state
-  const [messages, setMessages] = useState([
-    {
-      name: `Welcome to the ${uppercase(symbol)} chat.`,
-      message:
-        "Please be respectful of other users. We're all in this together.",
-    },
-  ]);
+const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
   const [mouseDown, setMouseDown] = useState(false);
   //ref
   const messageContainerRef = useRef();
 
   useEffect(() => {
-    const socket = io();
-    socket.on("recieve-chat-message", handleSetMessage);
-
-    return () => socket.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!mouseDown) {
-      messageContainerRef && messageContainerRef.current.scrollIntoView();
-    }
+    messageContainerRef.current.scrollIntoView();
   }, [messages]);
-
-  const handleSetMessage = (data) => {
-    setMessages((messages) => [...messages, data]);
-  };
 
   return (
     <ChatWrapper>
@@ -42,6 +20,7 @@ const ChatArea = ({ symbol = "DOGEUSD", user }) => {
         onMouseUp={() => setMouseDown(false)}
       >
         {messages.map((message, index) => {
+          console.log(user, message);
           return (
             <MessageContainer
               key={index}
@@ -49,7 +28,7 @@ const ChatArea = ({ symbol = "DOGEUSD", user }) => {
               message={message}
               ref={messageContainerRef}
             >
-              <h3>{message.name}</h3>
+              <h3>{message.user}</h3>
               <p>{message.message}</p>
             </MessageContainer>
           );
@@ -75,7 +54,7 @@ const MessageContainer = styled.div`
   border-top: 1px solid silver;
   padding: 1rem 0;
   background-color: ${(props) =>
-    props.message.name === props.user.name && "#1b2030"};
+    props.message.user === props.user.name && "#1b2030"};
   padding: 0 1rem;
 `;
 

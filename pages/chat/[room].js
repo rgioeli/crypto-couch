@@ -4,16 +4,24 @@ import styled from "styled-components";
 import ChatArea from "../../src/pages/chat/components/ChatArea";
 import StatusBar from "../../src/pages/chat/components/StatusBar";
 import { getSession } from "next-auth/react";
-import { MongoClient } from "mongodb";
 import Script from "next/script";
+import Pusher from "pusher-js";
+import { uppercase } from "../../src/pages/chat/functions/uppercase";
 
-export default function Room({ user, messages, symbol }) {
+export default function Room({ user, symbol }) {
   const ctx = useContext(MenuContext);
 
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      user: `Welcome to the ${uppercase(symbol)} chat.`,
+      message:
+        "Please be respectful of other users. We're all in this together.",
+    },
+  ]);
 
   useEffect(() => {
-    connectSocket();
+    configPusher();
   }, []);
 
   useEffect(() => {
@@ -30,8 +38,18 @@ export default function Room({ user, messages, symbol }) {
       });
   }, [scriptLoaded]);
 
-  const connectSocket = async () => {
-    await fetch(`https://crypto-couch.vercel.app/api/socket`);
+  const configPusher = async () => {
+    const options = {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
+    };
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY, options);
+
+    const channel = pusher.subscribe(`${symbol}`);
+
+    channel.bind("chat-event", (message) => {
+      console.log(message);
+      setMessages((prevState) => [...prevState, message]);
+    });
   };
 
   return (
@@ -55,19 +73,12 @@ export default function Room({ user, messages, symbol }) {
 }
 
 export async function getServerSideProps({ req, params }) {
-  const client = await MongoClient.connect(process.env.MONGO_SERVER);
-  const db = client.db();
-  const messages = JSON.stringify(
-    await db.collection("messages").find({}).toArray()
-  );
-
   const session = await getSession({ req });
 
   return {
     props: {
       symbol: params.room,
       user: session && session.user,
-      messages,
     },
   };
 }

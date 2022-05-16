@@ -12,25 +12,37 @@ const ChatBox = ({ user }) => {
   };
 
   const submitMessage = async (e) => {
-    const socket = io();
-    socket.emit("send-chat-message", message, user);
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/chat-pusher", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(message),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
     setMessage("");
   };
 
   return (
     <ChatBoxWrapper>
       {user ? (
-        <>
+        <form onSubmit={submitMessage}>
           <p>Logged in as {user.name} </p>
           <Textarea
             placeholder="Type something.."
             minRows={2}
+            onKeyDown={(e) => e.code === "Enter" && submitMessage(e)}
             onChange={handleChange}
-            onKeyUp={(e) => e.code === "Enter" && submitMessage()}
             value={message}
           />
-          <SendMessage onClick={submitMessage}>Send</SendMessage>
-        </>
+          <SendMessage type="submit" value="Send" />
+        </form>
       ) : (
         <ButtonWrapper>
           <Button href={"/api/auth/signin"} text={"Login to join the chat"} />
@@ -47,13 +59,21 @@ const ChatBoxWrapper = styled.div`
   flex-flow: column;
   align-items: flex-end;
   justify-content: flex-end;
+
+  form {
+    width: 100%;
+
+    p {
+      padding-left: 0.5rem;
+    }
+  }
 `;
 
 const ButtonWrapper = styled.div`
   width: 100%;
 `;
 
-const SendMessage = styled.div`
+const SendMessage = styled.input`
   padding: 1rem;
   width: 100%;
   background-color: #45dd8a;
