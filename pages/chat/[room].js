@@ -22,8 +22,6 @@ export default function Room({ user, symbol }) {
 
   useEffect(() => {
     configPusher();
-    console.log(process.env);
-    console.log(process.env.NEXT_PUBLIC_PUSHER_APP_KEY);
   }, []);
 
   useEffect(() => {
