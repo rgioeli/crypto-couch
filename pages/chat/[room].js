@@ -47,7 +47,6 @@ export default function Room({ user, symbol }) {
     const channel = pusher.subscribe(`${symbol}`);
 
     channel.bind("chat-event", (message) => {
-      console.log(message);
       setMessages((prevState) => [...prevState, message]);
     });
   };

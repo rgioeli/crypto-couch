@@ -2,10 +2,11 @@ import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
 import { useState, useEffect, useRef } from "react";
 import Button from "../../../globals/Button";
-import { io } from "socket.io-client";
+import { Bars } from "react-loader-spinner";
 
 const ChatBox = ({ user }) => {
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -13,7 +14,7 @@ const ChatBox = ({ user }) => {
 
   const submitMessage = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await fetch("/api/chat-pusher", {
         method: "POST",
@@ -22,10 +23,11 @@ const ChatBox = ({ user }) => {
         },
         body: JSON.stringify(message),
       });
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
-
     setMessage("");
   };
 
@@ -41,7 +43,16 @@ const ChatBox = ({ user }) => {
             onChange={handleChange}
             value={message}
           />
-          <SendMessage type="submit" value="Send" />
+
+          <SendMessage>
+            {loading ? (
+              <LoadingWrapper>
+                <Bars color="#fff" height={"2rem"} width={"2rem"} />
+              </LoadingWrapper>
+            ) : (
+              "Send"
+            )}
+          </SendMessage>
         </form>
       ) : (
         <ButtonWrapper>
@@ -73,8 +84,9 @@ const ButtonWrapper = styled.div`
   width: 100%;
 `;
 
-const SendMessage = styled.input`
+const SendMessage = styled.div`
   padding: 1rem;
+  max-height: 50px;
   width: 100%;
   background-color: #45dd8a;
   display: flex;
@@ -86,6 +98,12 @@ const SendMessage = styled.input`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Textarea = styled(TextareaAutosize)`

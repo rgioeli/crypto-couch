@@ -20,7 +20,6 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
         onMouseUp={() => setMouseDown(false)}
       >
         {messages.map((message, index) => {
-          console.log(user, message);
           return (
             <MessageContainer
               key={index}
