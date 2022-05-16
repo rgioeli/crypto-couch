@@ -31,7 +31,7 @@ export default function Room({ user, messages, symbol }) {
   }, [scriptLoaded]);
 
   const connectSocket = async () => {
-    await fetch(`${process.env.NEXTAUTH_URL}/api/socket`);
+    await fetch(`https://crypto-couch.vercel.app/api/socket`);
   };
 
   return (
