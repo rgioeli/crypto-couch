@@ -3,39 +3,19 @@ import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoClient } from "mongodb";
 import { signOut } from "next-auth/react";
+import bcryptjs from "bcryptjs";
+import nodemailer from "nodemailer";
+import EmailProvider from "next-auth/providers/email";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "../../../src/lib/mongodb";
 
 export default NextAuth({
   // Configure one or more authentication providers
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
-    Credentials({
-      name: "Crypto Couch",
-      credentials: {
-        username: {
-          label: "Username",
-          type: "email",
-          placeholder: "johndoe@gmail.com",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
-      },
-      async authorize(credentials, req) {
-        if (credentials.username == "matt@test.com") {
-          return {
-            id: 2,
-            email: "matt@test.com",
-            name: "matt",
-          };
-        }
-        if (credentials.username == "admin@aol.com") {
-          return {
-            id: 1,
-            email: "rgioeli@icloud.com",
-            name: "rgioeli",
-          };
-        }
-      },
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
     }),
     GoogleProvider({
       name: "Google",
@@ -44,17 +24,9 @@ export default NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    async signIn({ user, account }) {
-      const client = await MongoClient.connect(process.env.MONGO_SERVER);
-      const db = client.db("crypto-couch");
-      if (account.provider == "google") {
-        db.collection("users").insertOne({
-          username: user.email,
-        });
-      }
-
-      return true;
-    },
+  theme: {
+    logo: "/images/crypto-logo.jpg",
+    colorScheme: "dark",
+    brandColor: "#45dd8a",
   },
 });

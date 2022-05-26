@@ -5,19 +5,36 @@ const MenuContext = createContext();
 export const MenuContextProvider = ({ children }) => {
   const [toggleChat, setToggleChat] = useState(false);
   const [toggleNews, setToggleNews] = useState(false);
+  const [toggleRooms, setToggleRooms] = useState(false);
 
   const toggleChatDiv = () => {
-    console.log("Hitting it...");
-    setToggleChat(!toggleChat);
+    setToggleRooms(false);
+    setToggleNews(false);
+    setToggleChat(true);
   };
 
   const toggleNewsDiv = () => {
-    setToggleNews(!toggleNews);
+    setToggleRooms(false);
+    setToggleNews(true);
+    setToggleChat(false);
+  };
+
+  const toggleRoomsDiv = () => {
+    setToggleRooms(true);
+    setToggleNews(false);
+    setToggleChat(false);
   };
 
   return (
     <MenuContext.Provider
-      value={{ toggleChat, toggleNews, toggleChatDiv, toggleNewsDiv }}
+      value={{
+        toggleChat,
+        toggleNews,
+        toggleRooms,
+        toggleChatDiv,
+        toggleNewsDiv,
+        toggleRoomsDiv,
+      }}
     >
       {children}
     </MenuContext.Provider>

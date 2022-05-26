@@ -4,13 +4,31 @@ import { useState, useEffect, useRef } from "react";
 import Button from "../../../globals/Button";
 import { Bars } from "react-loader-spinner";
 
-const ChatBox = ({ user }) => {
+const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [maxLength] = useState(250);
+  const [charsLeft, setCharsLeft] = useState(250);
+
+  //ref
+  const textAreaRef = useRef();
 
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
+
+  useEffect(() => {
+    setCharsLeft(maxLength - message.length);
+  }, [message]);
+
+  useEffect(() => {
+    if (replyMessage) {
+      setMessage(
+        `[reply to=${replyMessage.user}]${replyMessage.message}[/reply] \n`
+      );
+      textAreaRef.current.focus();
+    }
+  }, [replyMessage]);
 
   const submitMessage = async (e) => {
     e.preventDefault();
@@ -35,10 +53,17 @@ const ChatBox = ({ user }) => {
     <ChatBoxWrapper>
       {user ? (
         <form onSubmit={submitMessage}>
-          <p>Logged in as {user.name} </p>
+          <BoxHeader>
+            <p>Logged in as {user.name.handle} </p>
+            <p>
+              Limit:<Limit charsLeft={charsLeft}> {charsLeft}</Limit>/250
+            </p>
+          </BoxHeader>
           <Textarea
             placeholder="Type something.."
             minRows={2}
+            maxLength={maxLength}
+            ref={textAreaRef}
             onKeyDown={(e) => e.code === "Enter" && submitMessage(e)}
             onChange={handleChange}
             value={message}
@@ -75,13 +100,24 @@ const ChatBoxWrapper = styled.div`
     width: 100%;
 
     p {
-      padding-left: 0.5rem;
+      padding: 1rem 0.5rem;
+      font-size: 0.9rem;
     }
   }
 `;
 
 const ButtonWrapper = styled.div`
   width: 100%;
+`;
+
+const BoxHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Limit = styled.span`
+  color: ${(props) => (props.charsLeft > 50 ? "#45dd8a" : "#ff0c55")};
 `;
 
 const SendMessage = styled.div`

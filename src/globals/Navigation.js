@@ -8,7 +8,7 @@ const Navigation = () => {
   return (
     <NavigationWrapper>
       <p>Crypto Couch</p>
-      {session.status !== "authenticated" ? (
+      {session.status == "unauthenticated" ? (
         <Button text={"Login to Crypto Couch"} href={"/api/auth/signin"} />
       ) : (
         <Button text={"Logout"} href={"/api/auth/signout"} />
