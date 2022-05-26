@@ -19,7 +19,6 @@ export default function Home({ rooms }) {
     { name: "DOTUSD", id: 9 },
     { name: "ADAUSD", id: 10 },
   ]);
-  useEffect(() => {}, []);
   return (
     <HomeWrapper>
       <Spacer direction="top" space="0.25rem" />
@@ -41,7 +40,7 @@ export default function Home({ rooms }) {
         <section>
           {allRooms &&
             allRooms.map(({ name, id }) => {
-              return <Room key={id} name={name} user_count={user_count} />;
+              return <Room key={id} name={name} />;
             })}
         </section>
       </RoomsWrapper>
@@ -94,6 +93,7 @@ export async function getServerSideProps(ctx) {
       },
     };
   } else {
+    console.log("this");
     const pusher = new ServerPusher({
       appId: process.env.PUSHER_APP_ID,
       key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,
