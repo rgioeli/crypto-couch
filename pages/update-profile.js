@@ -10,9 +10,10 @@ const UpdateProfile = ({ genName, genHandle }) => {
       <header>
         <h3>Welcome to Crypto Couch!</h3>
         <p>
-          We've provided default profile information others can identify you
-          with if you'd like to quickly get started. However, you probably want
-          to personalize it! Edit your profile below before getting started.
+          We have provided default profile information others can identify you
+          with if you would like to quickly get started. However, you probably
+          want to personalize it! Edit your profile below before getting
+          started.
         </p>
       </header>
       <Profile genName={genName} genHandle={genHandle} />

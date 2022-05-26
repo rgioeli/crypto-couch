@@ -1,24 +1,23 @@
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import Pusher from "pusher-js";
 import ServerPusher from "pusher";
 import Room from "../src/pages/home/Room";
 import Spacer from "../src/globals/Spacer";
+import { v4 } from "uuid";
 
 export default function Home({ rooms }) {
   const [allRooms] = useState([
-    { name: "BTCUSD" },
-    { name: "ETHUSD" },
-    { name: "DOGEUSD" },
-    { name: "APEUSD" },
-    { name: "SHIBUSD" },
-    { name: "XRPUSD" },
-    { name: "BUSD" },
-    { name: "SOLUSD" },
-    { name: "DOTUSD" },
-    { name: "ADAUSD" },
+    { name: "BTCUSD", id: 1 },
+    { name: "ETHUSD", id: 2 },
+    { name: "DOGEUSD", id: 3 },
+    { name: "APEUSD", id: 4 },
+    { name: "SHIBUSD", id: 5 },
+    { name: "XRPUSD", id: 6 },
+    { name: "BUSD", id: 7 },
+    { name: "SOLUSD", id: 8 },
+    { name: "DOTUSD", id: 9 },
+    { name: "ADAUSD", id: 10 },
   ]);
   useEffect(() => {}, []);
   return (
@@ -28,9 +27,9 @@ export default function Home({ rooms }) {
       <Spacer direction="top" space="1rem" />
       <ActiveRoomsWrapper>
         <p>Active Rooms</p>
-        {rooms.length ? (
-          rooms.map(({ name, user_count }) => {
-            return <Room key={name} name={name} user_count={user_count} />;
+        {rooms.length > 0 ? (
+          rooms.map(({ name, id, user_count }) => {
+            return <Room key={id} name={name} user_count={user_count} />;
           })
         ) : (
           <NoActiveRooms>There are currently no active rooms.</NoActiveRooms>
@@ -41,8 +40,8 @@ export default function Home({ rooms }) {
         <p>Popular Rooms</p>
         <section>
           {allRooms &&
-            allRooms.map(({ name, user_count }) => {
-              return <Room name={name} user_count={user_count} />;
+            allRooms.map(({ name, id }) => {
+              return <Room key={id} name={name} user_count={user_count} />;
             })}
         </section>
       </RoomsWrapper>
@@ -116,6 +115,7 @@ export async function getServerSideProps(ctx) {
       for (const key in data.channels) {
         const pos = key.indexOf("-");
         rooms.push({
+          id: v4(),
           name: key.substring(pos + 1, key.length),
           user_count: data.channels[key].user_count,
         });
