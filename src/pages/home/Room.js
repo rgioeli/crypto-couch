@@ -10,7 +10,7 @@ const Room = ({ name, user_count }) => {
 
   return (
     <RoomsWrapper onClick={handleRoute}>
-      <h2>{name}</h2>
+      <h2>{name.toUpperCase()}</h2>
       <p>{user_count && `Users in room: ${user_count}`}</p>
     </RoomsWrapper>
   );

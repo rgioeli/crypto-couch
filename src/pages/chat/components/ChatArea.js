@@ -107,7 +107,7 @@ const ChatWrapper = styled.div`
 const MessageContainer = styled.div`
   border-top: 1px solid silver;
   background-color: ${(props) =>
-    props.message.handle === props.user.name.handle
+    props.message?.handle === props.user?.name?.handle
       ? "#1b2030"
       : props.message.replyTo &&
         props.message.replyTo.username === props.user.name.username &&

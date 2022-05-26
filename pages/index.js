@@ -8,16 +8,16 @@ import { v4 } from "uuid";
 
 export default function Home({ rooms }) {
   const [allRooms] = useState([
-    { name: "BTCUSD", id: 1 },
-    { name: "ETHUSD", id: 2 },
-    { name: "DOGEUSD", id: 3 },
-    { name: "APEUSD", id: 4 },
-    { name: "SHIBUSD", id: 5 },
-    { name: "XRPUSD", id: 6 },
-    { name: "BUSD", id: 7 },
-    { name: "SOLUSD", id: 8 },
-    { name: "DOTUSD", id: 9 },
-    { name: "ADAUSD", id: 10 },
+    { name: "btcusd", id: 1 },
+    { name: "ethusd", id: 2 },
+    { name: "dogeusd", id: 3 },
+    { name: "apeusd", id: 4 },
+    { name: "shibusd", id: 5 },
+    { name: "xrpusd", id: 6 },
+    { name: "bnbusd", id: 7 },
+    { name: "solusd", id: 8 },
+    { name: "dotusd", id: 9 },
+    { name: "adausd", id: 10 },
   ]);
   return (
     <HomeWrapper>
@@ -93,7 +93,6 @@ export async function getServerSideProps(ctx) {
       },
     };
   } else {
-    console.log("this");
     const pusher = new ServerPusher({
       appId: process.env.PUSHER_APP_ID,
       key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,

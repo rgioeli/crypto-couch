@@ -139,6 +139,15 @@ export default function Room({ user, symbol }) {
 export async function getServerSideProps({ req, params }) {
   const session = await getSession({ req });
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: "api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       symbol: params.room,
