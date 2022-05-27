@@ -16,6 +16,7 @@ export default function Room({ user, symbol }) {
   const menuContext = useContext(MenuContext);
   //state
   const [loadScript, setLoadScript] = useState(false);
+  const [bound, setBound] = useState(1);
   const [messages, setMessages] = useState([
     {
       user: `Welcome to the ${uppercase(symbol)} chat.`,
@@ -105,12 +106,14 @@ export default function Room({ user, symbol }) {
 
         const channel = pusher.subscribe(`presence-${symbol}`);
 
-        channel.bind("pusher:subscription_succeeded", () => {
-          channel.members.each((member) => console.log(member));
+        if (channel.bind("chat-event")) {
+          channel.unbind("chat-event");
+        }
 
-          channel.bind("chat-event", (message) => {
-            setMessages((prevState) => [...prevState, message]);
-          });
+        channel.bind("pusher:subscription_succeeded", () => {});
+
+        channel.bind("chat-event", (message) => {
+          setMessages((prevState) => [...prevState, message]);
         });
       }
     });
@@ -158,7 +161,7 @@ export async function getServerSideProps({ req, params }) {
 
 const HomeWrapper = styled.div`
   display: flex;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 100px);
   justify-content: center;
   max-width: 1920px;
   margin: auto;

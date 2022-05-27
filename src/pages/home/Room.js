@@ -17,6 +17,7 @@ const Room = ({ name, user_count }) => {
 };
 
 const RoomsWrapper = styled.div`
+  max-width: 300px;
   background-color: #45dd8a;
   margin-right: 1rem;
   margin-top: 1rem;

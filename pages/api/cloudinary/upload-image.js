@@ -165,6 +165,7 @@ const addFileToCloudinary = async ({ originialFileName, path }, user) => {
 
   //upload
   try {
+    console.log(user);
     const uploadResponse = await cloudinary.uploader.upload(path, {
       folder: `crypto-couch/${user._id}/profile-image`,
       overwrite: true,

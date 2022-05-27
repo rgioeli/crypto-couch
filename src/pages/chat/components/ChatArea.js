@@ -44,6 +44,7 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
       <ChatTitle>{uppercase(symbol)}</ChatTitle>
       <MiddleContent onScroll={handleScrollFunctionality}>
         {messages.map((message, index) => {
+          console.log(message);
           console.log(message.user);
           return (
             <MessageContainer
@@ -57,13 +58,15 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
                   <h3>{message.user}</h3>
                   {/* <p>{message.handle}</p> */}
                 </div>
-                <Image
-                  src={message.image && message.image}
-                  width={45}
-                  height={45}
-                  objectFit={"contain"}
-                  style={{ borderRadius: "100%" }}
-                />
+                <MessageImageWrapper>
+                  <Image
+                    src={message.image && message.image}
+                    width={50}
+                    height={50}
+                    objectFit={"contain"}
+                    style={{ borderRadius: "100%" }}
+                  />
+                </MessageImageWrapper>
               </MessageHeader>
               {message.replyTo &&
                 message.replyTo.username &&
@@ -95,13 +98,18 @@ const MessageText = styled.p`
 `;
 
 const ChatWrapper = styled.div`
-  height: calc(100vh - 75px - 2rem);
+  height: calc(100vh - 100px - 1rem);
   flex-flow: column;
   min-width: 300px;
   max-width: 350px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+`;
+
+const MessageImageWrapper = styled.div`
+  height: 40px;
+  width: 40px;
 `;
 
 const MessageContainer = styled.div`

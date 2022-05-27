@@ -25,7 +25,7 @@ export default NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   theme: {
-    logo: "/images/crypto-logo.jpg",
+    logo: "/images/logo.png",
     colorScheme: "dark",
     brandColor: "#45dd8a",
   },
