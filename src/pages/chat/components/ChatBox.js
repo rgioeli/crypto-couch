@@ -9,6 +9,9 @@ const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
   const [loading, setLoading] = useState(false);
   const [maxLength] = useState(250);
   const [charsLeft, setCharsLeft] = useState(250);
+  // flick this on or off to stop a message from going through
+  const [timeoutMessage, setTimeoutMessage] = useState(false);
+  const [timeoutMessages, setTimeoutMessages] = useState([]);
 
   //ref
   const textAreaRef = useRef();
@@ -39,13 +42,15 @@ const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify(message),
       });
+
       setLoading(false);
     } catch (error) {
-      console.error(error);
       setLoading(false);
     }
+
     setMessage("");
   };
 

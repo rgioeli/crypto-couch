@@ -24,6 +24,7 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
   useEffect(() => {
     if (autoScrolled) {
       messageContainerRef.current.scrollIntoView();
+      setAutoScrolled(false);
     }
   }, [autoScrolled]);
 
@@ -35,7 +36,7 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
   const handleScrollFunctionality = (e) => {
     const heightOfScroll = e.target.scrollHeight - e.target.offsetHeight;
     if (e.target.scrollTop >= heightOfScroll - 20) {
-      console.log("We're at the bottom");
+      setAutoScrolled(true);
     }
   };
 
@@ -44,8 +45,6 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
       <ChatTitle>{uppercase(symbol)}</ChatTitle>
       <MiddleContent onScroll={handleScrollFunctionality}>
         {messages.map((message, index) => {
-          console.log(message);
-          console.log(message.user);
           return (
             <MessageContainer
               key={index}

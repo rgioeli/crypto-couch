@@ -9,7 +9,6 @@ import Pusher from "pusher-js";
 import { uppercase } from "../../src/pages/chat/functions/uppercase";
 
 export default function Room({ user, symbol }) {
-  console.log(user);
   //globals
   const MESSAGES_LENGTH_MAXIMUM = 50;
   //context
@@ -109,8 +108,6 @@ export default function Room({ user, symbol }) {
         if (channel.bind("chat-event")) {
           channel.unbind("chat-event");
         }
-
-        channel.bind("pusher:subscription_succeeded", () => {});
 
         channel.bind("chat-event", (message) => {
           setMessages((prevState) => [...prevState, message]);
