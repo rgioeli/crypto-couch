@@ -10,8 +10,9 @@ const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
   const [maxLength] = useState(250);
   const [charsLeft, setCharsLeft] = useState(250);
   // flick this on or off to stop a message from going through
-  const [timeoutMessage, setTimeoutMessage] = useState(false);
-  const [timeoutMessages, setTimeoutMessages] = useState([]);
+  const [intervalId, setIntervalId] = useState(null);
+  const [throttled, setThrottled] = useState(false);
+  const [messageIntervalTimeLeft, setMessageIntervalTimeLeft] = useState(10);
 
   //ref
   const textAreaRef = useRef();
@@ -33,6 +34,22 @@ const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
     }
   }, [replyMessage]);
 
+  const handleThrottledMessage = () => {
+    intervalId = setInterval(() => {
+      handleMessageTimeout();
+    }, 1000);
+  };
+
+  const handleMessageTimeout = () => {
+    setMessageIntervalTimeLeft((prevState) => prevState - 1);
+  };
+
+  useEffect(() => {
+    if (messageIntervalTimeLeft <= 0) {
+      clearInterval(intervalId);
+    }
+  }, [messageIntervalTimeLeft]);
+
   const submitMessage = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -46,6 +63,7 @@ const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
         body: JSON.stringify(message),
       });
 
+      handleThrottledMessage();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -61,7 +79,7 @@ const ChatBox = ({ user, replyMessage, setReplyMessage }) => {
           <BoxHeader>
             <p>Logged in as {user.name.handle} </p>
             <p>
-              Limit:<Limit charsLeft={charsLeft}> {charsLeft}</Limit>/250
+              Limit:<Limit charsLeft={charsLeft}>{charsLeft}</Limit>/250
             </p>
           </BoxHeader>
           <Textarea
