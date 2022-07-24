@@ -14,8 +14,9 @@ export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
+      server:
+        "smtp://crypto-couch@outlook.com:Plokijuhyg0!@smtp.office365.com:587",
+      from: "crypto-couch@outlook.com",
     }),
     GoogleProvider({
       name: "Google",
