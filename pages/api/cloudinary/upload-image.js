@@ -179,7 +179,7 @@ const addFileToCloudinary = async ({ originialFileName, path }, user) => {
 
     return uploadResponse;
   } catch (e) {
-    return { error: "Something happened during update, please try again." };
+    return { error: e };
   }
 };
 
