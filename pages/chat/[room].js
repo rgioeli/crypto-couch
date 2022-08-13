@@ -18,6 +18,7 @@ export default function Room({ user, symbol }) {
   const [loadScript, setLoadScript] = useState(false);
   const [messages, setMessages] = useState([
     {
+      type: "display",
       user: `Welcome to the ${uppercase(symbol)} chat.`,
       message:
         "Please be respectful to each other within the community. We're all in this together.",

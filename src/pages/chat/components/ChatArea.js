@@ -76,9 +76,11 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
                   </ReplyMessage>
                 )}
               <MessageText>{message.message}</MessageText>
-              <MessageFooter>
-                <p onClick={() => handleReply(message)}>reply</p>
-              </MessageFooter>
+              {message.type && message.type !== "display" && (
+                <MessageFooter>
+                  <p onClick={() => handleReply(message)}>reply</p>
+                </MessageFooter>
+              )}
             </MessageContainer>
           );
         })}
