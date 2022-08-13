@@ -167,7 +167,7 @@ const validateUsername = (username) => {
 
 const addFileToCloudinary = async ({ originialFileName, path }, user) => {
   //connect to cloudinary
-  cloudinaryConfig();
+  await cloudinaryConfig();
 
   //upload
   try {
