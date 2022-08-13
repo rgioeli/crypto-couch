@@ -7,6 +7,7 @@ import Joi from "@hapi/joi";
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
+  console.log(session);
 
   //this ensures someone is using the post method to get this request
   if (req.method !== "POST" || !session)
@@ -53,6 +54,8 @@ export default async function handler(req, res) {
       return res.status(400).json(uploadImageResponse);
 
     secure_url = uploadImageResponse.secure_url;
+  } else {
+    secure_url = "/images/couch.png";
   }
 
   const checkUsername = validateUsername(fields?.username[0]);
@@ -107,11 +110,14 @@ const updateUserInDatabase = async (username, handle, bio, imageUrl, user) => {
 };
 
 const validateBio = (bio) => {
+  if (!bio) return;
+
   const schema = Joi.object({
     bio: Joi.string().min(0).max(150),
   });
 
   const validate = schema.validate({ bio });
+
   if (validate.error)
     return {
       error: "Make sure bio isn't larger than 150 chracters and try again.",
@@ -126,7 +132,7 @@ const validateHandle = (handle) => {
     handle = "@" + handle.substring(0);
   }
   const schema = Joi.object({
-    handle: Joi.string().min(4).max(20),
+    handle: Joi.string().min(4).max(20).required(),
   });
   const validate = schema.validate({ handle });
   const regexp = /^@[\w\s]{3,20}$/;
@@ -144,7 +150,7 @@ const validateHandle = (handle) => {
 const validateUsername = (username) => {
   username = username.trim();
   const schema = Joi.object({
-    username: Joi.string().min(3).max(20),
+    username: Joi.string().min(3).max(20).required(),
   });
   const validate = schema.validate({ username });
   const regexp = /^[\w\s.]{3,20}$/;

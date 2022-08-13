@@ -4,12 +4,14 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Spacer from "./Spacer";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const Navigation = () => {
-  //get session
   const session = useSession();
   //router
   const router = useRouter();
+
+  useEffect(() => console.log(session), []);
 
   return (
     <NavigationWrapper>
@@ -22,20 +24,21 @@ const Navigation = () => {
         />
         <p>Crypto Couch</p>
       </ImageWrapper>
-      {session.status == "unauthenticated" ? (
+      {session?.status == "unauthenticated" ? (
         <Button text={"Login to Crypto Couch"} href={"/api/auth/signin"} />
       ) : (
-        session.data && (
+        session?.status == "authenticated" &&
+        router.pathname !== "/update-profile" && (
           <UserNav onClick={() => router.push("/api/auth/signout")}>
             <header>
               <Spacer direction={"left"} space={"0.5rem"} />
-              <p>{session.data.user.name.handle}</p>
+              <p>{session?.data?.user?.name?.handle}</p>
             </header>
             <Spacer direction={"left"} space={"0.5rem"} />
             <UserImageWrapper>
               <Image
                 style={{ borderRadius: "100%" }}
-                src={session.data.user.image}
+                src={session?.data?.user?.image || "/images/couch.png"}
                 objectFit="cover"
                 height={100}
                 width={100}

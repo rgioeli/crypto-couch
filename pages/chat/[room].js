@@ -7,15 +7,17 @@ import { getSession } from "next-auth/react";
 import Script from "next/script";
 import Pusher from "pusher-js";
 import { uppercase } from "../../src/pages/chat/functions/uppercase";
+import { useRouter } from "next/router";
 
 export default function Room({ user, symbol }) {
+  //router
+  const router = useRouter();
   //globals
   const MESSAGES_LENGTH_MAXIMUM = 50;
   //context
   const menuContext = useContext(MenuContext);
   //state
   const [loadScript, setLoadScript] = useState(false);
-  const [bound, setBound] = useState(1);
   const [messages, setMessages] = useState([
     {
       user: `Welcome to the ${uppercase(symbol)} chat.`,
@@ -29,6 +31,7 @@ export default function Room({ user, symbol }) {
   useEffect(() => {
     configPusher();
     checkForScriptId();
+    console.log(user);
   }, []);
 
   useEffect(() => {

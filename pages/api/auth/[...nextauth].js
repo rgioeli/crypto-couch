@@ -1,29 +1,43 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoClient } from "mongodb";
-import { signOut } from "next-auth/react";
-import bcryptjs from "bcryptjs";
-import nodemailer from "nodemailer";
-import EmailProvider from "next-auth/providers/email";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "../../../src/lib/mongodb";
+import { mongoConnect } from "../../../src/lib/mongodbConnect";
 
 export default NextAuth({
   // Configure one or more authentication providers
-  adapter: MongoDBAdapter(clientPromise),
+  // adapter: MongoDBAdapter(clientPromise),
   providers: [
-    EmailProvider({
-      server:
-        "smtp://crypto-couch@outlook.com:Plokijuhyg0!@smtp.office365.com:587",
-      from: "crypto-couch@outlook.com",
-    }),
     GoogleProvider({
       name: "Google",
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
   ],
+  callbacks: {
+    signIn: async ({ user }) => {
+      console.log("When does this run?");
+      const client = await mongoConnect();
+      const foundUser = await client
+        .db()
+        .collection("users")
+        .findOne({ email: user.email });
+      if (!foundUser)
+        await client.db().collection("users").insertOne({ email: user.email });
+      return true;
+    },
+    session: async ({ session, token, user }) => {
+      const client = await mongoConnect();
+      const foundUser = await client
+        .db()
+        .collection("users")
+        .findOne({ email: session.user.email });
+
+      session.user = {
+        ...foundUser,
+      };
+
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   theme: {
     logo: "/images/logo.png",

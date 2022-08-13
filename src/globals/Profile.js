@@ -240,6 +240,7 @@ const Profile = ({ genHandle, genName }) => {
   //EFFECTS
   useEffect(() => {
     if (pageComplete?.success == "ok") {
+      router.reload();
       router.push("/chat/btcusd");
     }
   }, [pageComplete]);

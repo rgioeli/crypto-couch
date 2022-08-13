@@ -23,6 +23,7 @@ const UpdateProfile = ({ genName, genHandle }) => {
 
 export async function getServerSideProps(ctx) {
   const session = await getSession({ req: ctx.req });
+  console.log("Session", session);
 
   // if there's not a session, redirect them - or if there is a session and the user has the required properties - redirect them
 
