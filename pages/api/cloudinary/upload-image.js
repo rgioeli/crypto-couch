@@ -4,6 +4,7 @@ import { getSession } from "next-auth/react";
 import { mongoConnect } from "../../../src/lib/mongodbConnect";
 import multiparty from "multiparty";
 import Joi from "@hapi/joi";
+import { v4 } from "uuid";
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
@@ -172,7 +173,7 @@ const addFileToCloudinary = async ({ originialFileName, path }, user) => {
   //upload
   try {
     const uploadResponse = await cloudinary.uploader.upload(path, {
-      folder: `crypto-couch/${user._id}/profile-image`,
+      folder: `crypto-couch/${v4()}/profile-image`,
       overwrite: true,
       public_id: "profile-image",
     });
