@@ -35,7 +35,7 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
 
   const handleScrollFunctionality = (e) => {
     const heightOfScroll = e.target.scrollHeight - e.target.offsetHeight;
-    if (e.target.scrollTop >= heightOfScroll - 20) {
+    if (e.target.scrollTop >= heightOfScroll - 100) {
       setAutoScrolled(true);
     }
   };
