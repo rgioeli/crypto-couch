@@ -21,13 +21,6 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    if (autoScrolled) {
-      messageContainerRef.current.scrollIntoView();
-      setAutoScrolled(false);
-    }
-  }, [autoScrolled]);
-
   const handleReply = (message) => {
     const id = v4();
     setReplyMessage({ ...message, replyId: id });
@@ -35,8 +28,10 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
 
   const handleScrollFunctionality = (e) => {
     const heightOfScroll = e.target.scrollHeight - e.target.offsetHeight;
-    if (e.target.scrollTop >= heightOfScroll - 100) {
+    if (e.target.scrollTop > heightOfScroll - 20) {
       setAutoScrolled(true);
+    } else {
+      setAutoScrolled(false);
     }
   };
 
