@@ -76,7 +76,7 @@ const ChatArea = ({ messages, symbol = "DOGEUSD", user }) => {
                   </ReplyMessage>
                 )}
               <MessageText>{message.message}</MessageText>
-              {message.type && message.type !== "display" && (
+              {message.type !== "display" && (
                 <MessageFooter>
                   <p onClick={() => handleReply(message)}>reply</p>
                 </MessageFooter>
