@@ -167,12 +167,12 @@ const validateUsername = (username) => {
 
 const addFileToCloudinary = async ({ originialFileName, path }, user) => {
   //connect to cloudinary
-  await cloudinaryConfig();
+  cloudinaryConfig();
 
   //upload
   try {
     const uploadResponse = await cloudinary.uploader.upload(path, {
-      folder: `crypto-couch/${user.email}/profile-image`,
+      folder: `crypto-couch/${user._id}/profile-image`,
       overwrite: true,
       public_id: "profile-image",
     });
