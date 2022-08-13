@@ -240,8 +240,9 @@ const Profile = ({ genHandle, genName }) => {
   //EFFECTS
   useEffect(() => {
     if (pageComplete?.success == "ok") {
-      router.reload();
-      router.push("/chat/btcusd");
+      if (session?.user?.name?.handle) {
+        router.push("/chat/btcusd");
+      }
     }
   }, [pageComplete]);
 

@@ -22,7 +22,7 @@ export default NextAuth({
         .findOne({ email: user.email });
       if (!foundUser)
         await client.db().collection("users").insertOne({ email: user.email });
-      return true;
+      return user;
     },
     session: async ({ session, token, user }) => {
       const client = await mongoConnect();
