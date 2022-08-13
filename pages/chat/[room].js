@@ -10,8 +10,6 @@ import { uppercase } from "../../src/pages/chat/functions/uppercase";
 import { useRouter } from "next/router";
 
 export default function Room({ user, symbol }) {
-  //router
-  const router = useRouter();
   //globals
   const MESSAGES_LENGTH_MAXIMUM = 50;
   //context
@@ -23,8 +21,7 @@ export default function Room({ user, symbol }) {
       user: `Welcome to the ${uppercase(symbol)} chat.`,
       message:
         "Please be respectful to each other within the community. We're all in this together.",
-      image:
-        "https://res.cloudinary.com/dcsz33y4p/image/upload/v1653378833/crypto-couch/628c8ee70118c006931b0586/profile-image/profile-image.jpg",
+      image: "/images/default-chat-image.jpg",
     },
   ]);
 
