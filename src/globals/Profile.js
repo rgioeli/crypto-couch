@@ -6,8 +6,11 @@ import FormInput from "./FormInput";
 import Spacer from "./Spacer";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const Profile = ({ genHandle, genName }) => {
+  //SESSION
+  const session = useSession();
   //ROUTER
   const router = useRouter();
 
@@ -240,9 +243,7 @@ const Profile = ({ genHandle, genName }) => {
   //EFFECTS
   useEffect(() => {
     if (pageComplete?.success == "ok") {
-      if (session?.user?.name?.handle) {
-        router.push("/chat/btcusd");
-      }
+      router.reload();
     }
   }, [pageComplete]);
 
