@@ -13,16 +13,16 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    signIn: async ({ user }) => {
+    signIn: async ({ user, email, profile }) => {
       console.log("When does this run?");
       const client = await mongoConnect();
       const foundUser = await client
         .db()
         .collection("users")
-        .findOne({ email: user.email });
+        .findOne({ email });
       if (!foundUser)
         await client.db().collection("users").insertOne({ email: user.email });
-      return user;
+      return profile;
     },
     session: async ({ session, token, user }) => {
       const client = await mongoConnect();

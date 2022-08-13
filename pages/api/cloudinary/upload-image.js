@@ -8,7 +8,6 @@ import { v4 } from "uuid";
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
-  console.log(session);
 
   //this ensures someone is using the post method to get this request
   if (req.method !== "POST" || !session)
