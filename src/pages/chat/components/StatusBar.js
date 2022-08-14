@@ -23,7 +23,7 @@ const StatusBar = () => {
       >
         <BsChatLeftDots />
       </StatusBarIcon>
-      <StatusBarIcon
+      {/* <StatusBarIcon
         onClick={() => {
           ctx.toggleRoomsDiv();
           setClickIcon("Rooms");
@@ -42,7 +42,7 @@ const StatusBar = () => {
         id={clickIcon}
       >
         <BsFillPeopleFill />
-      </StatusBarIcon>
+      </StatusBarIcon> */}
     </StatusBarWrapper>
   );
 };

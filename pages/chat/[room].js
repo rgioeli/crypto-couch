@@ -7,7 +7,8 @@ import { getSession } from "next-auth/react";
 import Script from "next/script";
 import Pusher from "pusher-js";
 import { uppercase } from "../../src/pages/chat/functions/uppercase";
-import { useRouter } from "next/router";
+import NewsArea from "../../src/pages/chat/components/NewsArea";
+import RoomsArea from "../../src/pages/chat/components/RoomsArea";
 
 export default function Room({ user, symbol }) {
   //globals
@@ -29,7 +30,6 @@ export default function Room({ user, symbol }) {
   useEffect(() => {
     configPusher();
     checkForScriptId();
-    console.log(user);
   }, []);
 
   useEffect(() => {
@@ -125,8 +125,8 @@ export default function Room({ user, symbol }) {
         {menuContext.toggleChat && (
           <ChatArea messages={messages} user={user && user} symbol={symbol} />
         )}
-        {menuContext.toggleNews && <div>Toggle News</div>}
-        {menuContext.toggleRooms && <div>Toggle Rooms</div>}
+        {menuContext.toggleNews && <NewsArea />}
+        {menuContext.toggleRooms && <RoomsArea />}
         <StatusBar />
         <Script
           src="https://s3.tradingview.com/tv.js"

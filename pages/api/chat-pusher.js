@@ -4,8 +4,7 @@ import { getSession } from "next-auth/react";
 export default async function handler(req, res) {
   const message = req.body;
   const session = await getSession({ req });
-  console.log("this is running wayyyy too much");
-  console.log(session);
+
   if (!session || req.method !== "POST")
     return res.status(400).json({ error: "Not authorized" });
 
